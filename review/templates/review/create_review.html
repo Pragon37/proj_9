@@ -3,6 +3,7 @@
   <h2>Create a review</h2>  
   <form method="post">
     {% csrf_token %}
+    {{ ticket_form.as_p }}
     <p>Headline : {{ review_form.headline }}</p>
     <!-- 
       <p>Rating : {{ review_form.rating }}</p>

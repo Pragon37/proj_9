@@ -54,11 +54,17 @@ def ticket_delete(request, id):
 @login_required
 def create_review(request):
     review_form = forms.ReviewForm()
+    ticket_form = forms.TicketForm()
     if request.method == 'POST':
         review_form = forms.ReviewForm(request.POST)
-        if review_form.is_valid():
+        ticket_form = forms.TicketForm(request.POST, request.FILES)
+        if all([review_form.is_valid(),ticket_form.is_valid()]):
+            ticket = ticket_form.save(commit=False)
+            ticket.user = request.user
+            ticket.save()
             review = review_form.save(commit=False)
+            review.ticket = ticket
             review.user = request.user
             review.save()
             return redirect('home')
-    return render(request, 'review/create_review.html', context={'review_form': review_form})
+    return render(request, 'review/create_review.html', context={'ticket_form': ticket_form, 'review_form': review_form})
