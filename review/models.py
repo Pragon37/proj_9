@@ -1,8 +1,23 @@
 from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+"""
+A few remainders for me:
+    fields of models are defined in django.db.models.fields
+    but are imported in django.db.models.
+    By convention use:
+        from django.db import models and refer to <Foo>Field with models.<Foo>Field
+        
+Field.null if true Djamgo stores empty value with null in the DB.
+if Field.blank is True the field may be empty.It does not relation to the DB
+it is there for validation. It allows to work with empty forms. 
+
+"""
 
 class Ticket(models.Model):
+    def __str__(self):
+        return f'{self.title}'
+
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=128, blank=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

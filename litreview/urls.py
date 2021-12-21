@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 import authentication.views
 import review.views
 
@@ -24,4 +26,12 @@ urlpatterns = [
     path('logout/', authentication.views.logout_user, name='logout'),
     path('home/', review.views.home, name='home'),
     path('signup/', authentication.views.signup_page, name='signup'),
+    path('review/create_ticket', review.views.ticket_and_image_upload, name='create_ticket'),
+    path('review/<int:id>/', review.views.post_detail, name='post_detail'),
+    path('review/<int:id>/ticket_update/', review.views.ticket_update, name='ticket_update'),
+    path('review/<int:id>/ticket_delete/', review.views.ticket_delete, name='ticket_delete'),
+    path('review/create_review', review.views.create_review, name='create_review'),
 ]
+
+urlpatterns += static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

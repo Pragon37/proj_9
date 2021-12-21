@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Create a review</h2>  
+  <form method="post">
+    {% csrf_token %}
+    <p>Headline : {{ review_form.headline }}</p>
+    <!-- 
+      <p>Rating : {{ review_form.rating }}</p>
+    
+    <fieldset>
+    <legend>{{ review_form.rating.label }}</legend>
+    {% for radio in review_form.rating %}
+    <div class="myradio">
+        {{ radio }}
+    </div>
+    {% endfor %}
+    </fieldset>
+    -->
+    <p>Rating :</p>
+    {% for radio in review_form.rating %}
+    <label for="{{ radio.id_for_label }}">
+        {{ radio.tag }}
+        <span class="radio"> {{ radio.choice_label }}</span>
+    </label>
+    {% endfor %}
+
+
+    <p>Body : {{ review_form.body }}</p>
+    <button type="submit">Send</button>
+  </form>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>YOUR POSTS</h1>
+<h2>Requested by: {{ ticket.user }}</h2>
+<h2>Date: {{ ticket.time_created}}</h2>
+  <ul>
+   <li>Title : {{ ticket.title }}</li>
+   <li>Description : {{ ticket.description }}</li>
+  </ul>
+  {% if ticket.image %}
+   <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
+  {% endif %}
+ <form action="ticket_update">
+    <input type="submit" value="Update" />
+</form> 
+ <form action="ticket_delete">
+    <input type="submit" value="Delete" />
+</form> 
+{% endblock content %}

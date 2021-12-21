@@ -1,0 +1,6 @@
+<h1>Delete ticket</h1>
+<p>Are you sure to delete ticket : {{ ticket.title }} ?</p>
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="submit" Value="Delete">
+</form>
