@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Create a review</h2>  
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ ticket_form.as_p }}
+  <h2>Update your review</h2>  
+  <p> Review created : {{ review_form.instance.time_created }}</p>
+  <p> {{ review_form.instance.user }} has requested a review</p>
+  <p> Title is :{{ review_form.instance.ticket.title }} </p>
+  <p> description is :{{ review_form.instance.ticket.description }} </p>
+  <img src="{{ review_form.instance.ticket.image.url }}" alt="Book cover" width="130" height="200">
     <p>Headline : {{ review_form.headline }}</p>
     <!-- 
       <p>Rating : {{ review_form.rating }}</p>

@@ -51,6 +51,12 @@ def ticket_delete(request, id):
         return redirect('home')
     return render(request, 'review/ticket_delete.html', {'ticket': ticket})
 
+"""
+<Form> could not be created because the data didn't validate.
+If this happens for an ImageField check for enctype="multipart/form-data"
+in the template !!!
+"""
+
 @login_required
 def create_review(request):
     review_form = forms.ReviewForm()
@@ -58,7 +64,7 @@ def create_review(request):
     if request.method == 'POST':
         review_form = forms.ReviewForm(request.POST)
         ticket_form = forms.TicketForm(request.POST, request.FILES)
-        if all([review_form.is_valid(),ticket_form.is_valid()]):
+        if any([review_form.is_valid(),ticket_form.is_valid()]):
             ticket = ticket_form.save(commit=False)
             ticket.user = request.user
             ticket.save()
@@ -68,3 +74,32 @@ def create_review(request):
             review.save()
             return redirect('home')
     return render(request, 'review/create_review.html', context={'ticket_form': ticket_form, 'review_form': review_form})
+
+@login_required
+def review_update(request, id):
+    """Retrieve a review and its related form and content"""
+    review = models.Review.objects.get(id=id)
+    if request.method == 'POST':
+        review_form = forms.Review(request.POST, request.FILES, instance=review)
+        if review_form.is_valid():
+            review_form.save()
+            return redirect('post_detail', review.id)
+    else:
+        review_form = forms.ReviewForm(instance=review)
+    
+    return render(request, 'review/review_update.html', context={'review_form': review_form})
+
+@login_required
+def review_delete(request, id):
+    """Retrieve a review and its related form and content"""
+    review = models.Review.objects.get(id=id)
+    if request.method == 'POST':
+        review.delete()
+        #Temporary stuff. It does not work if deleting the last review
+        return redirect('home')
+    return render(request, 'review/review_delete.html', {'review': review})
+
+@login_required
+def follower_update(request, id):
+    pass
+

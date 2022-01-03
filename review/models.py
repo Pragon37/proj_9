@@ -33,6 +33,8 @@ class UserFollows(models.Model):
         unique_together=('user', 'followed_user', )
 
 class Review(models.Model):
+    def __str__(self):
+        return f'{self.ticket}'
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

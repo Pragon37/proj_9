@@ -31,6 +31,8 @@ urlpatterns = [
     path('review/<int:id>/ticket_update/', review.views.ticket_update, name='ticket_update'),
     path('review/<int:id>/ticket_delete/', review.views.ticket_delete, name='ticket_delete'),
     path('review/create_review', review.views.create_review, name='create_review'),
+    path('review/<int:id>/review_update/', review.views.review_update, name='review_update'),
+    path('review/<int:id>/review_delete/', review.views.review_delete, name='review_delete'),
 ]
 
 urlpatterns += static(

@@ -1,0 +1,6 @@
+<h1>Delete review</h1>
+<p>Are you sure to delete review : {{ review.headline }} ?</p>
+<form action="" method="post">
+  {% csrf_token %}
+  <input type="submit" Value="Delete">
+</form>
