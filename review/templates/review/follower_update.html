@@ -1,0 +1,36 @@
+<!--create another field in your form and pass it the pk of the object-->
+<!--https://stackoverflow.com/questions/50547018/delete-object-with-form-in-django-->
+
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Follow other users</h2>  
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+  </form>
+  <h2>{{ request.user}} Your Followee are</h2>
+    <p>{{ message }}</p>
+  
+    {% for user in request.user.following.all %}
+      <div class="followee">
+          {{ user }}
+        <form method="post">
+            {% csrf_token %}
+            {{ delete_form }}
+            <button type="submit" name="pk" value="{{ user.pk }}" >Delete</button>
+         </form>
+      </div>
+    {% endfor %}
+
+      <h2>{{ request.user}} Your Follower are</h2>
+  
+    {% for user in request.user.followed_by.all %}
+      <div class="follower">
+          {{ user }}
+      </div>
+    {% endfor %}
+
+
+  <h2>I can print the request user : {{ request.user }}</h2>  
+{% endblock content %}

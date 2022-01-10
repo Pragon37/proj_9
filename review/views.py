@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from . import forms, models
+from authentication.models import User
 
 @login_required
 def home(request):
@@ -101,5 +102,45 @@ def review_delete(request, id):
 
 @login_required
 def follower_update(request, id):
-    pass
+    """
+    #First test if it is a create or update.
+    UserFollows.objects.filter(user
+    """
+    message = ''
+    if request.method == 'POST':
+        if 'add_followee' in request.POST:
+            form = forms.UserFollowsForm(request.POST, user=request.user)
+            delete_form = forms.DeleteFollowsForm()
+            if form.is_valid():
+                username=form.cleaned_data['username'],
+                user_following = User.objects.get(username=request.user)
+                user_followed = User.objects.get(username=username[0])
+                new_relation = models.UserFollows()
+                new_relation.user = User.objects.get(username=request.user)
+                new_relation.followed_user = User.objects.get(username=username[0])
+                print("New Relation : ", new_relation)
+                if models.UserFollows.objects.filter(user=new_relation.user, 
+                                                     followed_user=new_relation.followed_user).exists():
+                    message = '{} follows {} already exists'.format(new_relation.user, new_relation.followed_user)
+                else:
+                    models.UserFollows.save(new_relation)
+        if 'delete_followee' in request.POST:
+            form = forms.UserFollowsForm(user=request.user)
+            delete_form = forms.DeleteFollowsForm(request.POST)
+            print("Request: ", request.POST)
+            print("Request pk: ", request.POST['pk'])
+            print("Request user: ", request.user)
+            if delete_form.is_valid():
+                deleted_relation = models.UserFollows.objects.get(pk=request.POST['pk'])
+                #deleted_relation.user = User.objects.get(username=request.user)
+                #deleted_relation.followed_user = User.objects.get(pk=request.POST['pk'])
+                print("To be deleted : ", deleted_relation)
+                pass
+    else:
+        form = forms.UserFollowsForm(user=request.user)
+        delete_form = forms.DeleteFollowsForm()
+    return render(request, 'review/follower_update.html',
+                  context={'form': form, 'delete_form': delete_form, 'message': message})
+
+
 
