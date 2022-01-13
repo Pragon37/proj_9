@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.db.models import Subquery
 
 from . import forms, models
 from authentication.models import User
@@ -101,10 +102,9 @@ def review_delete(request, id):
     return render(request, 'review/review_delete.html', {'review': review})
 
 @login_required
-def follower_update(request, id):
+def follower_update(request):
     """
-    #First test if it is a create or update.
-    UserFollows.objects.filter(user
+    Either a form submission to add a followee, or a delete action to remove a followee
     """
     message = ''
     if request.method == 'POST':
@@ -113,29 +113,21 @@ def follower_update(request, id):
             delete_form = forms.DeleteFollowsForm()
             if form.is_valid():
                 username=form.cleaned_data['username'],
-                user_following = User.objects.get(username=request.user)
-                user_followed = User.objects.get(username=username[0])
                 new_relation = models.UserFollows()
                 new_relation.user = User.objects.get(username=request.user)
                 new_relation.followed_user = User.objects.get(username=username[0])
-                print("New Relation : ", new_relation)
+                #Check if the relation already exists
                 if models.UserFollows.objects.filter(user=new_relation.user, 
                                                      followed_user=new_relation.followed_user).exists():
-                    message = '{} follows {} already exists'.format(new_relation.user, new_relation.followed_user)
+                    message = '{} follows {} already exists!'.format(new_relation.user, new_relation.followed_user)
                 else:
                     models.UserFollows.save(new_relation)
         if 'delete_followee' in request.POST:
             form = forms.UserFollowsForm(user=request.user)
             delete_form = forms.DeleteFollowsForm(request.POST)
-            print("Request: ", request.POST)
-            print("Request pk: ", request.POST['pk'])
-            print("Request user: ", request.user)
             if delete_form.is_valid():
                 deleted_relation = models.UserFollows.objects.get(pk=request.POST['pk'])
-                #deleted_relation.user = User.objects.get(username=request.user)
-                #deleted_relation.followed_user = User.objects.get(pk=request.POST['pk'])
-                print("To be deleted : ", deleted_relation)
-                pass
+                deleted_relation.delete()
     else:
         form = forms.UserFollowsForm(user=request.user)
         delete_form = forms.DeleteFollowsForm()
@@ -143,4 +135,29 @@ def follower_update(request, id):
                   context={'form': form, 'delete_form': delete_form, 'message': message})
 
 
+@login_required
+def post_update(request):
+    #gather my most recent ticket, then gather my review of this ticket, 
+    #then my most recent review of the ticket from another user
+    """Retrieve a ticket and its related form and content"""
+    print("Request: ", request.user)
+    ticket = models.Ticket.objects.filter(user__username=request.user).order_by('-time_created')
+    print("Ticket: ", ticket)
+    review = models.Review.objects.filter(user__username=request.user).order_by('-time_created')
+    print("Review: ", review)
+    print("Review PK: ", review[0].pk)
+    print("Review Ticket: ", review[0].ticket)
+    print("Review Ticket Title: ", review[0].ticket.title)
+    print("Review Ticket User: ", review[0].ticket.user)
+    return render(request, 'review/post_update.html', context={'review': review[0], 'ticket': ticket[0]})
+
+@login_required
+def feed(request):
+    own_tickets = models.Ticket.objects.filter(user=request.user)
+    followee = request.user.following.values_list('followed_user', flat=True)
+    follow_tickets = models.Ticket.objects.filter(user__in=followee)
+    
+    print("TICKET LIST = ", own_tickets)
+    print("FOLLOWEE = ", follow_tickets)
+    return render(request, 'review/feed.html',)
 

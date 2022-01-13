@@ -4,13 +4,13 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>Follow other users</h2>  
+    <p>{{ message }}</p>
     <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Send</button>
   </form>
   <h2>{{ request.user}} Your Followee are</h2>
-    <p>{{ message }}</p>
   
     {% for user in request.user.following.all %}
       <div class="followee">

@@ -16,7 +16,7 @@ it is there for validation. It allows to work with empty forms.
 
 class Ticket(models.Model):
     def __str__(self):
-        return f'{self.title}'
+        return f'{self.title, self.user}'
 
     title = models.CharField(max_length=128)
     description = models.TextField(max_length=128, blank=True)
@@ -30,14 +30,14 @@ class UserFollows(models.Model):
     followed_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                       related_name='followed_by')
     def __str__(self):
-        return f"{self.user} follows {self.followed_user}"
+        return f"{self.followed_user}"
 
     class Meta():
         unique_together=('user', 'followed_user', )
 
 class Review(models.Model):
     def __str__(self):
-        return f'{self.ticket}'
+        return f'{self.ticket, self.pk}'
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

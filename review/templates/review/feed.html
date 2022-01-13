@@ -1,0 +1,14 @@
+
+{% extends 'base.html' %}
+{% block content %}
+	  <form action="{%url 'create_ticket' %}">
+      <input type="submit" value="Create ticket" />
+    </form>
+
+	  <form action="{%url 'create_review' %}">
+      <input type="submit" value="Create review" />
+    </form>
+
+  <!--
+    -->
+{% endblock content %}

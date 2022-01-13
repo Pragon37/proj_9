@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %}
+{% block content %}
+  <h2>You published a review</h2>  
+  <p> Review created : {{ review.time_created }}</p>
+  {% if  review.rating == 1  %}
+	 <strong>Avoid</strong>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+  {% elif  review.rating == 2  %}
+	 <strong>Bad</strong>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+  {% elif  review.rating == 3  %}
+	 <strong>Acceptable</strong>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+  {% elif  review.rating == 4  %}
+	 <strong>Good</strong>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_border_purple500 </span>
+  {% elif  review.rating == 5  %}
+	 <strong>Exceptional</strong>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+	 <span class="material-icons-outlined"> star_purple500 </span>
+  {% endif %}
+
+	<div>
+     <p> Ticket From : {{ review.ticket.user }}</p>
+     <p> Ticket created : {{ review.ticket.time_created }}</p>
+     <p> Ticket title : {{ review.ticket.title }}</p>
+			{% if review.ticket.image %}
+			 <img src="{{ review.ticket.image.url }}" alt="Book cover" width="130" height="200">
+			{% endif %}
+
+	</div>
+
+	  <form action="{%url 'review_update' review.pk %}">
+      <input type="submit" value="Update" />
+    </form>
+	  <form action="{%url 'review_delete' review.pk %}">
+      <input type="submit" value="Delete" />
+    </form>
+
+  <h2>You published a ticket</h2>  
+     <p> Ticket created : {{ ticket.time_created }}</p>
+     <p> Ticket title : {{ ticket.title }}</p>
+			{% if ticket.image %}
+			 <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
+			{% endif %}
+
+	  <form action="{%url 'ticket_update' ticket.pk %}">
+      <input type="submit" value="Update" />
+    </form>
+	  <form action="{%url 'ticket_delete' ticket.pk %}">
+      <input type="submit" value="Delete" />
+    </form>
+
+
+  <!--
+    -->
+{% endblock content %}
