@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.db.models import Subquery
+from django.db.models import CharField, Q, Value
 
 from . import forms, models
 from authentication.models import User
+
+from itertools import chain
 
 @login_required
 def home(request):
@@ -137,27 +139,68 @@ def follower_update(request):
 
 @login_required
 def post_update(request):
-    #gather my most recent ticket, then gather my review of this ticket, 
-    #then my most recent review of the ticket from another user
-    """Retrieve a ticket and its related form and content"""
+    #gather my most recent tickets, then gather my reviews of this tickets, 
+    #then my most recent reviews of the tickets from another user
+    """Retrieve a tickets and its related form and content"""
     print("Request: ", request.user)
-    ticket = models.Ticket.objects.filter(user__username=request.user).order_by('-time_created')
-    print("Ticket: ", ticket)
-    review = models.Review.objects.filter(user__username=request.user).order_by('-time_created')
-    print("Review: ", review)
-    print("Review PK: ", review[0].pk)
-    print("Review Ticket: ", review[0].ticket)
-    print("Review Ticket Title: ", review[0].ticket.title)
-    print("Review Ticket User: ", review[0].ticket.user)
-    return render(request, 'review/post_update.html', context={'review': review[0], 'ticket': ticket[0]})
+    tickets = models.Ticket.objects.filter(user__username=request.user).order_by('-time_created')
+    print("Ticket: ", tickets)
+    reviews = models.Review.objects.filter(user__username=request.user).order_by('-time_created')
+    print("Review: ", reviews)
+    print("Review PK: ", reviews[0].pk)
+    print("Review Ticket: ", reviews[0].ticket)
+    print("Review Ticket Title: ", reviews[0].ticket.title)
+    print("Review Ticket User: ", reviews[0].ticket.user)
+    return render(request, 'review/post_update.html', context={'reviews': reviews, 'tickets': tickets})
 
 @login_required
 def feed(request):
-    own_tickets = models.Ticket.objects.filter(user=request.user)
     followee = request.user.following.values_list('followed_user', flat=True)
-    follow_tickets = models.Ticket.objects.filter(user__in=followee)
-    
-    print("TICKET LIST = ", own_tickets)
-    print("FOLLOWEE = ", follow_tickets)
-    return render(request, 'review/feed.html',)
+
+    all_tickets = models.Ticket.objects.filter(Q(user=request.user) | Q(user__in=followee)) 
+    all_tickets = all_tickets.annotate(content_type=Value('TICKET', CharField()))
+
+    all_reviews = models.Review.objects.filter(Q(user=request.user) | Q(user__in=followee)) 
+    all_reviews = all_reviews.annotate(content_type=Value('REVIEW', CharField()))
+
+    # combine and sort the two types of posts
+    posts = sorted(
+        chain(all_reviews, all_tickets), 
+        key=lambda post: post.time_created, 
+        reverse=True
+    )
+    print("POST = ", posts)
+    return render(request, 'review/feed.html', context={'posts': posts})
+
+@login_required
+def write_review(request):
+    review_form = forms.ReviewForm()
+    if request.method == 'POST':
+        #This request coming from "Write review" form in feed/ticket_snippet
+        if 'ticket_pk' in request.POST:
+            ticket_pk =request.POST['ticket_pk'] 
+            #This request comming from "Write review" form in feed/ticket_snippet
+            print('TICKET_PK=', request.POST['ticket_pk'])
+            ticket = models.Ticket.objects.get(id=request.POST['ticket_pk'])
+            return render(request, 'review/write_review.html', context={'ticket':ticket, 'review_form':review_form})
+        elif 'rating' in request.POST:
+#            #This request coming from "Send" form in write_review and may happen only
+#            #when request Write Review has been issued. Hence ticket object exists.
+            review_form = forms.ReviewForm(request.POST)
+            print("REQUEST FROM SEND BTN IN WRITE_HTML ", request.POST)
+            if review_form.is_valid():
+                print("The review Form is valid")
+                review = review_form.save(commit=False)
+                review.ticket = models.Ticket.objects.get(id=request.POST['reviewed_ticket_pk']) 
+                review.user = request.user
+                print("REVIEW : ", review)
+                print("REVIEW : ", review)
+                print("RATING : ", review.rating)
+                print("HEADLINE : ", review.headline)
+                print("BODY : ", review.body)
+                review.save()
+                return redirect('feed')
+            else:
+                return render(request, 'review/write_review.html', context={'review_form':review_form})
+
 

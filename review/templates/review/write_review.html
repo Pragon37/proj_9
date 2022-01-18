@@ -1,0 +1,32 @@
+<h1>Write a Review</h1>
+<h1>You are posting a review to:</h1>
+<div>
+  <p> User {{ ticket.user }} requested a review </p>
+  <p> Request date : {{ ticket.time_created }}</p>
+  <p> Title : {{ ticket.title }} </p>
+  <p> Description : {{ ticket.description }} </p>
+  <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
+</div>
+
+<div>
+
+  <!-- Here start the review part-->
+
+<h1>Review</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Headline : {{ review_form.headline }}</p>
+    <p>Rating :</p>
+    {% for radio in review_form.rating %}
+    <label for="{{ radio.id_for_label }}">
+        {{ radio.tag }}
+        <span class="radio"> {{ radio.choice_label }}</span>
+    </label>
+    {% endfor %}
+    <p>Body : {{ review_form.body }}</p>
+    <button type="submit" name="reviewed_ticket_pk" value="{{ ticket.pk }}">Send</button>
+  </form>
+</div>
+
+<p>PK =  {{ ticket }}</p>
+
