@@ -1,34 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/review_update.css' %}">
+{% endblock css_files %}
+
 {% block content %}
+<div class="main-div">
   <h2>Update your review</h2>  
-  <p> Review created : {{ review_form.instance.time_created }}</p>
-  <p> {{ review_form.instance.user }} has requested a review</p>
-  <p> Title is :{{ review_form.instance.ticket.title }} </p>
-  <p> description is :{{ review_form.instance.ticket.description }} </p>
-  <img src="{{ review_form.instance.ticket.image.url }}" alt="Book cover" width="130" height="200">
-    <p>Headline : {{ review_form.headline }}</p>
-    <!-- 
-      <p>Rating : {{ review_form.rating }}</p>
-    
-    <fieldset>
-    <legend>{{ review_form.rating.label }}</legend>
-    {% for radio in review_form.rating %}
-    <div class="myradio">
-        {{ radio }}
+    <div id="main_div__ticket" >
+      <p> {{ review_form.instance.user }}
+            has requested a review
+          {{ review_form.instance.time_created }}</p>
+      <p>{{ review_form.instance.ticket.title }} </p>
+      <p>{{ review_form.instance.ticket.description }} </p>
+      <img src="{{ review_form.instance.ticket.image.url }}" alt="Book cover" width="130" height="200">
     </div>
-    {% endfor %}
-    </fieldset>
-    -->
-    <p>Rating :</p>
-    {% for radio in review_form.rating %}
-    <label for="{{ radio.id_for_label }}">
-        {{ radio.tag }}
-        <span class="radio"> {{ radio.choice_label }}</span>
-    </label>
-    {% endfor %}
+    <div class=main_div__review" >
+        <h3>Headline</h3>
+        {{ review_form.headline }}
+        <h3>Rating</h3>
+      <section class="rating">
+      {% for radio in review_form.rating %}
+      <label for="{{ radio.id_for_label }}">
+          {{ radio.tag }}
+          <span class="radio"> {{ radio.choice_label }}</span>
+      </label>
+      {% endfor %}
+      </section>
 
+        <h3>Your review</h3>
+        {{ review_form.body }}
 
-    <p>Body : {{ review_form.body }}</p>
-    <button type="submit">Send</button>
+      <button id="send-btn" type="submit">Send</button>
+    </div>
   </form>
+</div>
 {% endblock content %}

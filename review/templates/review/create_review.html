@@ -1,32 +1,43 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/create_review.css' %}">
+{% endblock css_files %}
+
 {% block content %}
+<div class="main-div">
   <h2>Create a review</h2>  
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ ticket_form.as_p }}
-    <p>Headline : {{ review_form.headline }}</p>
-    <!-- 
-      <p>Rating : {{ review_form.rating }}</p>
-    
-    <fieldset>
-    <legend>{{ review_form.rating.label }}</legend>
-    {% for radio in review_form.rating %}
-    <div class="myradio">
-        {{ radio }}
+
+    <div id="main_div__ticket" >
+    <h3>Title</h3>
+    {{ ticket_form.title }}
+    <h3>Description</h3>
+    {{ ticket_form.description }}
+    <h3>Image</h3>
+    {{ ticket_form.image }}
     </div>
-    {% endfor %}
-    </fieldset>
-    -->
-    <p>Rating :</p>
+
+    <div class=main_div__review" >
+    <h3>Headline</h3>
+        {{ review_form.headline }}
+    <h3>Rating</h3>
+    <section class="rating">
     {% for radio in review_form.rating %}
     <label for="{{ radio.id_for_label }}">
         {{ radio.tag }}
         <span class="radio"> {{ radio.choice_label }}</span>
     </label>
     {% endfor %}
+    </section>
 
 
-    <p>Body : {{ review_form.body }}</p>
-    <button type="submit">Send</button>
+    <h3>Your review</h3>
+        {{ review_form.body }}
+    <button id="send-btn" type="submit">Send</button>
+    </div>
   </form>
+</div>
 {% endblock content %}

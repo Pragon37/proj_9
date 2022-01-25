@@ -1,6 +1,13 @@
-
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/feed.css' %}">
+{% endblock css_files %}
+
 {% block content %}
+<div class="main-div">
+	<section class="topform-div">
 	  <form action="{%url 'create_ticket' %}">
       <input type="submit" value="Create ticket" />
     </form>
@@ -8,24 +15,25 @@
 	  <form action="{%url 'create_review' %}">
       <input type="submit" value="Create review" />
     </form>
+	</section>
 
     {% for post in posts %}
        {% if post.content_type == 'TICKET' %}
-       <p>TICKET TICKET TICKET TICKET TICKET TICKET TICKET TICKET TICKET TICKET</p>
-          {% if post.user == request.user %}
-             <p>THIS IS MY POST</p>
-           {% endif %}
-       <p> This is a Ticket : {{ post.title}} BY {{ post.user }} DATE CREATED {{ post.time_created }}</p>
-       {% include 'review/partials/ticket_snippet.html' with ticket=post %}
+      <div>
+       <!--<p> This is a Ticket : {{ post.title}} BY {{ post.user }} DATE CREATED {{ post.time_created }}</p> -->
+
+         {% include 'review/partials/ticket_snippet.html' with ticket=post %}
+      </div>
        {% elif post.content_type == 'REVIEW' %}
-       <p>REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW</p>
-       <h2>Temporary for review</h2>
-       <p> This is a Review : {{ post.headline }} , from ticket : {{ post.ticket.title }} BY {{ post.ticket.user }}</p>
+      <div>
+       <!--<p> This is a Review : {{ post.headline }} , from ticket : {{ post.ticket.title }} BY {{ post.ticket.user
+         }}</p> -->
           {% include 'review/partials/review_snippet.html' with review=post %}
-       <p>DATE CREATED {{ post.ticket.time_created }}</p>
+          <!-- <p>DATE CREATED {{ post.ticket.time_created }}</p> -->
+      </div>
        {% endif %}
     {% endfor %}
-
+</div>
   <!--
     -->
 {% endblock content %}

@@ -1,17 +1,20 @@
-<h2>>>>>>>>>>>>>>>>>BEGIN Review snippet<<<<<<<<<<<<<<<<<<<<</h2>
-<h2>{{ review.user }} has published a review dated : {{ review.time_created }}</h2>
+<p>{{ review.user }} published a review  {{ review.time_created }}</p>
 {% include 'review/partials/rating_snippet.html' %}
 <p> {{ review.body }}</p>
-<p>NOW THE RELATED TICKET INFOS</p>
-<p>THE TICKET IS FROM : {{ review.ticket.user }}</p>
-<p>THE TITLE IS : {{ review.ticket.title }}</p>
+<div>
+  <section class="ticket-info" >
+    <p>Ticket from  {{ review.ticket.user }}</p>
+    <p>{{ review.ticket.title }}</p>
+  </section>
 {% if request.user == review.user %}
   <img src="{{ review.ticket.image.url }}" alt="Book cover" width="130" height="200">
 {% else %}
-  <form method="post" action="{%url 'write_review' %}">
-    {% csrf_token %}
-    <button type="submit" name="ticket_pk" value="{{ review.ticket.pk }}" >Write review</button>
-  </form>
+	<section class="form-div">
+    <form method="post" action="{%url 'write_review' %}">
+      {% csrf_token %}
+      <button type="submit" name="ticket_pk" value="{{ review.ticket.pk }}" >Write review</button>
+    </form>
+	</section>
+</div>
 {% endif %}
-<h2>>>>>>>>>>>>>>>>>END Review snippet<<<<<<<<<<<<<<<<<<<<</h2>
 

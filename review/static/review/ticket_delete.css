@@ -1,0 +1,9 @@
+.main-div {
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:center;
+}
+#delete-input {
+  border-radius: 5px;
+}

@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/create_ticket.css' %}">
+{% endblock css_files %}
+
 {% block content %}
+<div class="main-div">
   <h2>Create a ticket</h2>  
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ ticket_form.as_p }}
-    <button type="submit">Send</button>
+    <h3>Title</h3>
+    {{ ticket_form.title }}
+    <h3>Description</h3>
+    {{ ticket_form.description }}
+    <h3>Image</h3>
+    {{ ticket_form.image }}
+    <button id="send-btn" type="submit">Send</button>
   </form>
+</div>
 {% endblock content %}

@@ -1,0 +1,12 @@
+.main-div {
+  margin-top: 10%;
+	display:flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+.registration-div input {
+  border-radius: 5px;
+}
+.connect-div button {
+  border-radius: 5px;
+}

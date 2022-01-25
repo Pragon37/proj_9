@@ -1,0 +1,18 @@
+.main-div {
+  margin-top: 10%;
+	display:flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+.main-div__btns {
+	display:flex;
+	flex-direction: row;
+	align-items:flex-end;
+  border-radius: 50px;
+}
+
+#register-btn, #return-input {
+  border-radius: 5px;
+}

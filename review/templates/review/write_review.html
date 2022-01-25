@@ -1,10 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/write_review.css' %}">
+{% endblock css_files %}
+
+{% block content %}
+<div class="main-div">
 <h1>Write a Review</h1>
 <h1>You are posting a review to:</h1>
 <div>
-  <p> User {{ ticket.user }} requested a review </p>
-  <p> Request date : {{ ticket.time_created }}</p>
-  <p> Title : {{ ticket.title }} </p>
-  <p> Description : {{ ticket.description }} </p>
+  <p> {{ ticket.user }}
+        has requested a review
+      {{ ticket.time_created }}</p>
+  <p> {{ ticket.title }} </p>
+  <p> {{ ticket.description }} </p>
   <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
 </div>
 
@@ -15,18 +25,22 @@
 <h1>Review</h1>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>Headline : {{ review_form.headline }}</p>
-    <p>Rating :</p>
+    <h3>Headline</h3>
+        {{ review_form.headline }}
+    <h3>Rating</h3>
+    <section class="rating">
     {% for radio in review_form.rating %}
     <label for="{{ radio.id_for_label }}">
         {{ radio.tag }}
         <span class="radio"> {{ radio.choice_label }}</span>
     </label>
     {% endfor %}
-    <p>Body : {{ review_form.body }}</p>
-    <button type="submit" name="reviewed_ticket_pk" value="{{ ticket.pk }}">Send</button>
+    </section>
+    <h3>Your review</h3>
+        {{ review_form.body }}
+    <button id="send-btn" type="submit" name="reviewed_ticket_pk" value="{{ ticket.pk }}">Send</button>
   </form>
 </div>
 
-<p>PK =  {{ ticket }}</p>
-
+</div>
+{% endblock content %}

@@ -1,15 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'authentication/signup.css' %}">
+{% endblock css_files %}
+
 {% block content %}
-  <h2>Register</h2>
-  {% if form.errors %}
-    {{ form.errors }}
-  {% endif %}
-  <form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit">Register</button>
-  </form>
-  <form action="{%url 'login' %}">
-    <input type="submit" value="Return" />
-  </form>
+<div class="main-div">
+
+	<div class="main-div--title">
+		<h2>Register</h2>
+	</div>
+
+	<div class="main-div__form">
+		{% if form.errors %}
+			{{ form.errors }}
+		{% endif %}
+	</div>
+
+	<div class="main-div__btns">
+		<div class="main-div__btn1">
+			<form method="post">
+				{{ form.as_p }}
+				{% csrf_token %}
+				<button id="register-btn" type="submit">Register</button>
+			</form>
+		</div>
+
+		<div class="main-div__btn2">
+			<form action="{% url 'login' %}">
+				<input id="return-input" type="submit" value="Return" />
+			</form>
+		</div>
+	</div>
+
+</div>
+	
 {% endblock content %}

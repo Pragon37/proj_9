@@ -1,0 +1,27 @@
+.main-div {
+  width: 100%;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:center;
+ }
+
+ .main-div div {
+  width : 50rem;
+  padding: 0.5rem 1rem;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:center;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+ }
+ 
+ .rating {
+   display: flex;
+   flex-direction: row;
+ }
+
+ #send-btn {
+   border-radius: 5px;
+ }

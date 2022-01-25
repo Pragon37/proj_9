@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'authentication/login.css' %}">
+{% endblock css_files %}
+
 {% block content %}
-  <h2>Register</h2>
-  <form action="{%url 'signup' %}">
-    <input type="submit" value="Register" />
-  </form>
-  <h2>Connect</h2>
-  <p>{{ message }}</p>
-  <form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type = "submit">Connect</button>
-  </form>
+	<div class="main-div">
+		<div class="registration-div">
+			<h2>Register</h2>
+			<form action="{%url 'signup' %}">
+				<input  id="register-input" type="submit" value="Register" />
+			</form>
+		</div>
+		<div class="connect-div">
+			<h2>Connect</h2>
+			<p>{{ message }}</p>
+			<form method="post">
+				{{ form.as_p }}
+				{% csrf_token %}
+				<button  id="connect-btn" type = "submit">Connect</button>
+			</form>
+		</div>
+	</div>
 {% endblock content %}

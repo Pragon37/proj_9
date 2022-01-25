@@ -1,0 +1,65 @@
+.main-div {
+  width: 100%;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:center;
+  margin: 0;
+  padding: 0;
+ }
+
+ .main-div div {
+  width : 50rem;
+  padding: 0.5rem 1rem;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items:flex-start;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+ }
+ 
+ .topform-div {
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+ }
+
+ .topform-div form {
+   margin: 10px 35px;
+ }
+ .topform-div input {
+   border-radius: 5px;
+ }
+ .rating {
+   display: flex;
+   flex-direction: row;
+ }
+
+
+.ticket-info {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+ }
+
+
+ .form-div {
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+ }
+
+ .form-div form {
+   margin: 15px;
+ }
+
+ .form-div button {
+   border-radius: 5px;
+ }
+

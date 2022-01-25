@@ -1,16 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/ticket_update.css' %}">
+{% endblock css_files %}
+
+{% block content %}
+<div class="main-div">
+
 <h1>Ticket Update</h1>
   <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
+  <!--
   <p>Title : {{ form.title }}</p>
   <p>Description : {{ form.description }}</p>
+  -->
+
+    <h3>Title</h3>
+    {{ form.title }}
+    <h3>Description</h3>
+    {{ form.description }}
  	<!-- 
     instance needed to display image : 
    	https://stackoverflow.com/questions/9830183/django-how-can-i-display-a-photo-saved-in-imagefield
 	-->
+    <p></p>
    <img src="{{ form.instance.image.url }}" alt="Book cover" width="130" height="200">
    <p>{{ form.image }}</p>
-  <input type="submit" value="Send">
+   <input  id="send-input" type="submit" value="Send">
   </form>
+
+</div>
+{% endblock content %}
+
+  <!--
 {% if request.user != form.instance.user %}
    <p>Vous êtes connecté en tant que {{ request.user }}.</p>
    <p>Le ticket appartient a {{ form.instance.user }}.</p>
@@ -18,4 +41,4 @@
    <p>Vous êtes connecté en tant que {{ request.user }}.</p>
    <p>Le ticket appartient a {{ form.instance.user }}.</p>
 {% endif %}
-	
+  -->	

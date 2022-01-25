@@ -1,25 +1,28 @@
-<h2>Execute ticket snippet</h2>
 <!---->
-<h2>{{ ticket.user }} requested a review</h2>  
-     <p> Ticket created : {{ ticket.time_created }}</p>
-     <p> Ticket title : {{ ticket.title }}</p>
+<p>{{ ticket.user }} requested a review {{ ticket.time_created }}</p>  
+     <p>  {{ ticket.title }}</p>
+     <p>  {{ ticket.description }}</p>
        {% if ticket.user == request.user  %}
        {% if ticket.review_set.all %}
           
 			   <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
-          <p>----------------------You already have already a review !!!!!!!!!!!!!!</p>
+          <!--<p>----------------------You already have already a review !!!!!!!!!!!!!!</p>-->
        {% else %}
-          <p>++++++++++++++++++++++NO review</p>
+          <!--<p>++++++++++++++++++++++NO review</p>-->
+        	<section class="form-div">
             <form method="post" action="{%url 'write_review' %}">
               {% csrf_token %}
               <button type="submit" name="ticket_pk" value="{{ ticket.pk }}" >Write review</button>
             </form>
+        	</section>
        {% endif %}
          {% else %}
+        	<section class="form-div">
             <form method="post" action="{%url 'write_review' %}">
               {% csrf_token %}
               <button type="submit" name="ticket_pk" value="{{ ticket.pk }}" >Write review</button>
             </form>
+        	</section>
        {% endif %}
 
 

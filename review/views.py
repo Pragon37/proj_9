@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.db.models import CharField, Q, Value
+from django.http import HttpResponseRedirect
 
 from . import forms, models
 from authentication.models import User
@@ -108,6 +109,25 @@ def follower_update(request):
     """
     Either a form submission to add a followee, or a delete action to remove a followee
     """
+    my_followers = []
+    all_users = User.objects.exclude(username=request.user).exclude(username='Pi')
+    my_followers = all_users.filter(following__followed_user=request.user)
+    #for everyuser in all_users:
+    #    if everyuser.following.filter(followed_user=request.user):
+    #        my_followers.append(everyuser)
+    #        print(request.user, " is followed by : ", everyuser)
+    print(my_followers)
+    print("FOLLOWING : ", request.user.following.all())
+    print("FOLLOWED_BY : ", request.user.followed_by.all())
+    #all_followers = models.UserFollows.objects.filter(followed_user=request.user)
+    all_followers = all_users.filter(following__followed_user=request.user)
+    print("ALL_FOLLOWERS = ", all_followers)
+         
+#       print("EVERYUSER :", everyuser, everyuser.following.filter(followed_user=request.user))
+#       for flw in everyuser.following.all():
+#           print("FLW: ", flw, request.user)
+#           print("FOUND : ", flw is request.user)
+        
     message = ''
     if request.method == 'POST':
         if 'add_followee' in request.POST:
@@ -134,7 +154,7 @@ def follower_update(request):
         form = forms.UserFollowsForm(user=request.user)
         delete_form = forms.DeleteFollowsForm()
     return render(request, 'review/follower_update.html',
-                  context={'form': form, 'delete_form': delete_form, 'message': message})
+                  context={'form': form, 'delete_form': delete_form, 'message': message, 'my_followers': my_followers})
 
 
 @login_required
@@ -147,10 +167,10 @@ def post_update(request):
     print("Ticket: ", tickets)
     reviews = models.Review.objects.filter(user__username=request.user).order_by('-time_created')
     print("Review: ", reviews)
-    print("Review PK: ", reviews[0].pk)
-    print("Review Ticket: ", reviews[0].ticket)
-    print("Review Ticket Title: ", reviews[0].ticket.title)
-    print("Review Ticket User: ", reviews[0].ticket.user)
+    #print("Review PK: ", reviews[0].pk)
+    #print("Review Ticket: ", reviews[0].ticket)
+    #print("Review Ticket Title: ", reviews[0].ticket.title)
+    #print("Review Ticket User: ", reviews[0].ticket.user)
     return render(request, 'review/post_update.html', context={'reviews': reviews, 'tickets': tickets})
 
 @login_required
@@ -182,6 +202,7 @@ def write_review(request):
             #This request comming from "Write review" form in feed/ticket_snippet
             print('TICKET_PK=', request.POST['ticket_pk'])
             ticket = models.Ticket.objects.get(id=request.POST['ticket_pk'])
+            save_ticket = ticket
             return render(request, 'review/write_review.html', context={'ticket':ticket, 'review_form':review_form})
         elif 'rating' in request.POST:
 #            #This request coming from "Send" form in write_review and may happen only
@@ -202,5 +223,6 @@ def write_review(request):
                 return redirect('feed')
             else:
                 return render(request, 'review/write_review.html', context={'review_form':review_form})
+    return redirect('feed')
 
 

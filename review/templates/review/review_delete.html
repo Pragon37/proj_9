@@ -1,6 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+	<link rel="stylesheet" href="{% static 'review/review_delete.css' %}">
+{% endblock css_files %}
+
+{% block content %}
+
+<div class="main-div">
 <h1>Delete review</h1>
 <p>Are you sure to delete review : {{ review.headline }} ?</p>
 <form action="" method="post">
   {% csrf_token %}
-  <input type="submit" Value="Delete">
+  <input id="delete-input" type="submit" Value="Delete">
 </form>
+</div>
+
+{% endblock content %}
