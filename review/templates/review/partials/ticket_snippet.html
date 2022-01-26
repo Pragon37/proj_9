@@ -1,4 +1,5 @@
 <!---->
+<div class="div-ticket">
 <p>{{ ticket.user }} requested a review {{ ticket.time_created }}</p>  
      <p>  {{ ticket.title }}</p>
      <p>  {{ ticket.description }}</p>
@@ -6,9 +7,7 @@
        {% if ticket.review_set.all %}
           
 			   <img src="{{ ticket.image.url }}" alt="Book cover" width="130" height="200">
-          <!--<p>----------------------You already have already a review !!!!!!!!!!!!!!</p>-->
        {% else %}
-          <!--<p>++++++++++++++++++++++NO review</p>-->
         	<section class="form-div">
             <form method="post" action="{%url 'write_review' %}">
               {% csrf_token %}
@@ -24,6 +23,7 @@
             </form>
         	</section>
        {% endif %}
+</div>
 
 
 

@@ -8,6 +8,8 @@
 {% block content %}
 <div class="main-div">
   <h2>Update your review</h2>  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div id="main_div__ticket" >
       <p> {{ review_form.instance.user }}
             has requested a review

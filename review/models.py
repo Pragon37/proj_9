@@ -7,12 +7,13 @@ A few remainders for me:
     but are imported in django.db.models.
     By convention use:
         from django.db import models and refer to <Foo>Field with models.<Foo>Field
-        
+
 Field.null if true Djamgo stores empty value with null in the DB.
-if Field.blank is True the field may be empty.It does not relation to the DB
-it is there for validation. It allows to work with empty forms. 
+if Field.blank is True the field may be empty.It does not have relation to the DB
+it is there for validation. It allows to work with empty forms.
 
 """
+
 
 class Ticket(models.Model):
     def __str__(self):
@@ -23,17 +24,19 @@ class Ticket(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
- 
+
 
 class UserFollows(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
     followed_user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                       related_name='followed_by')
+
     def __str__(self):
         return f"{self.followed_user}"
 
     class Meta():
-        unique_together=('user', 'followed_user', )
+        unique_together = ('user', 'followed_user', )
+
 
 class Review(models.Model):
     def __str__(self):
@@ -44,4 +47,3 @@ class Review(models.Model):
     headline = models.CharField(max_length=128)
     body = models.TextField(max_length=8192, blank=True)
     time_created = models.DateTimeField(auto_now_add=True)
-

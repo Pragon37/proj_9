@@ -8,18 +8,28 @@
   padding: 0;
  }
 
- .main-div div {
+ .main-div  div {
   width : 50rem;
-  padding: 0.5rem 1rem;
 	display:flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items:flex-start;
 	border: 1px solid #ccc;
 	box-sizing: border-box;
-  margin: 0;
   padding: 0;
  }
+ .div-review {
+  margin-bottom: 5px;
+}
+
+ .div-review div {
+  width: 98.5%; 
+  margin: 5px;
+}
+ .div-ticket {
+  margin-bottom: 5px;
+}
+
  
  .topform-div {
    width: 100%;

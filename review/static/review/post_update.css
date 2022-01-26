@@ -10,14 +10,14 @@
 
  .main-div div {
   width : 50rem;
-  padding: 0.5rem 1rem;
 	display:flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items:center;
+	align-items:flex-start;
 	border: 1px solid #ccc;
 	box-sizing: border-box;
   margin: 0;
+  margin-bottom: 5;
   padding: 0;
  }
  

@@ -16,9 +16,12 @@
   <section class="rating">
   {% include 'review/partials/rating_snippet.html' %}
   </section>
+  <p> {{ review.headline }}</p>
+  <p> {{ review.body }}</p>
 	<div>
      <p> Ticket From : {{ review.ticket.user }}</p>
      <p>  {{ review.ticket.title }}</p>
+     <p>  {{ review.ticket.description }}</p>
 			{% if review.ticket.image %}
 			 <img src="{{ review.ticket.image.url }}" alt="Book cover" width="130" height="200">
 			{% endif %}

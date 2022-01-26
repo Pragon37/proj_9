@@ -1,3 +1,4 @@
+<div class="div-review">
 <p>{{ review.user }} published a review  {{ review.time_created }}</p>
 {% include 'review/partials/rating_snippet.html' %}
 <p> {{ review.body }}</p>
@@ -5,9 +6,12 @@
   <section class="ticket-info" >
     <p>Ticket from  {{ review.ticket.user }}</p>
     <p>{{ review.ticket.title }}</p>
+    <p>{{ review.ticket.description }}</p>
   </section>
 {% if request.user == review.user %}
   <img src="{{ review.ticket.image.url }}" alt="Book cover" width="130" height="200">
+  </div>
+  </div>
 {% else %}
 	<section class="form-div">
     <form method="post" action="{%url 'write_review' %}">
@@ -15,6 +19,7 @@
       <button type="submit" name="ticket_pk" value="{{ review.ticket.pk }}" >Write review</button>
     </form>
 	</section>
+</div>
 </div>
 {% endif %}
 

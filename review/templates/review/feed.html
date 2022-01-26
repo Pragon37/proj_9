@@ -19,18 +19,9 @@
 
     {% for post in posts %}
        {% if post.content_type == 'TICKET' %}
-      <div>
-       <!--<p> This is a Ticket : {{ post.title}} BY {{ post.user }} DATE CREATED {{ post.time_created }}</p> -->
-
          {% include 'review/partials/ticket_snippet.html' with ticket=post %}
-      </div>
        {% elif post.content_type == 'REVIEW' %}
-      <div>
-       <!--<p> This is a Review : {{ post.headline }} , from ticket : {{ post.ticket.title }} BY {{ post.ticket.user
-         }}</p> -->
           {% include 'review/partials/review_snippet.html' with review=post %}
-          <!-- <p>DATE CREATED {{ post.ticket.time_created }}</p> -->
-      </div>
        {% endif %}
     {% endfor %}
 </div>

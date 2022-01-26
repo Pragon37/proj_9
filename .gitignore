@@ -1,7 +1,8 @@
 env/
 *.swp
 __pycache__
-db.sqlite3
 follow.txt
 help.py
 some.py
+views1.py
+views_ref.py
