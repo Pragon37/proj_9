@@ -11,8 +11,8 @@ It is implemented as a DJANGO/python program. To setup the environment you need 
 
 ```shell
 python -m venv env
-pip install -r requirements.txt
 env/Scripts/activate
+pip install -r requirements.txt
 python manage.py runserver
 To stop and quit the application: CTRL-BREAK.
 
